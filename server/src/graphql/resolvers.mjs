@@ -1,45 +1,30 @@
-import fetch from "node-fetch";
-const baseURL = "http://localhost:5000";
-
 const resolvers = {
   Author: {
-    async books(author, args, context, info) {
-      const res = await fetch(`${baseURL}/authors/${author.id}/books`);
-      const items = await res.json();
-      return items.map((item) => item.book);
+    books(author, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.getAuthorBooks(author.id);
     },
   },
   Book: {
-    async authors(book, args, context, info) {
-      const res = await fetch(`${baseURL}/books/${book.id}/authors`);
-      const items = await res.json();
-      return items.map((item) => item.author);
+    authors(book, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.getBookAuthors(book.id);
     },
   },
   Query: {
-    async author(root, { id }, context, info) {
+    author(root, { id }, { dataSources }, info) {
       // fetch an author by ID
-      const res = await fetch(`${baseURL}/authors/${id}`).catch(
-        (err) => err.message === "404: Not Found" && null
-      );
-      return res.json();
+      return dataSources.jsonServerApi.getAuthorById(id);
     },
-    async authors(root, args, context, info) {
+    authors(root, args, { dataSources }, info) {
       // fetch all authors
-      const res = await fetch(`${baseURL}/authors`);
-      return res.json();
+      return dataSources.jsonServerApi.getAuthors();
     },
-    async book(root, { id }, context, info) {
+    book(root, { id }, { dataSources }, info) {
       // fetch book by ID
-      const res = await fetch(`${baseURL}/books/${id}`).catch(
-        (err) => err.message === "404: Not Found" && null
-      );
-      return res.json();
+      return dataSources.jsonServerApi.getBookById(id);
     },
-    async books(root, args, context, info) {
-      // fetch all books here
-      const res = await fetch(`${baseURL}/books`);
-      return res.json();
+    books(root, args, { dataSources }, info) {
+      // fetch all books
+      return dataSources.jsonServerApi.getBooks();
     },
   },
 };
