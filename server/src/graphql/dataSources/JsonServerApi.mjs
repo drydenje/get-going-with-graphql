@@ -1,5 +1,4 @@
 import { RESTDataSource } from "@apollo/datasource-rest";
-console.log("URL:", process.env.REST_API_BASE_URL);
 
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
