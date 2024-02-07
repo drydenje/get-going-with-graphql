@@ -32,6 +32,16 @@ class JsonServerApi extends RESTDataSource {
   getBooks() {
     return this.get(`/books`);
   }
+
+  getBookReviews(bookId) {
+    return this.get(`/reviews?bookId=${bookId}`);
+  }
+
+  getReviewById(id) {
+    return this.get(`/reviews/${id}`).catch(
+      (err) => err.message === "404: Not Found" && null
+    );
+  }
 }
 
 export default JsonServerApi;
