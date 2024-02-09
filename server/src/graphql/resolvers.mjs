@@ -19,6 +19,17 @@ const resolvers = {
     reviewedOn(review, args, { dataSources }, info) {
       return review.createdAt;
     },
+    reviewer(review, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.getUserById(review.userId);
+    },
+  },
+  User: {
+    library(user, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.getUserLibrary(user.id);
+    },
+    reviews(user, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.getUserReviews(user.id);
+    },
   },
   Query: {
     author(root, { id }, { dataSources }, info) {
@@ -39,6 +50,9 @@ const resolvers = {
     },
     review(root, { id }, { dataSources }, info) {
       return dataSources.jsonServerApi.getReviewById(id);
+    },
+    user(root, { username }, { dataSources }, info) {
+      return dataSources.jsonServerApi.getUser(username);
     },
   },
 };

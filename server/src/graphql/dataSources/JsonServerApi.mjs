@@ -42,6 +42,26 @@ class JsonServerApi extends RESTDataSource {
       (err) => err.message === "404: Not Found" && null
     );
   }
+
+  getUserById(id) {
+    return this.get(`/users/${id}`).catch(
+      (err) => err.message === "404: Not Found" && null
+    );
+  }
+
+  async getUserLibrary(userId) {
+    const items = await this.get(`/users/${userId}/books`);
+    return items.map((item) => item.book);
+  }
+
+  getUserReviews(userId) {
+    return this.get(`/reviews?userId=${userId}`);
+  }
+
+  async getUser(username) {
+    const [user] = await this.get(`/users?username=${username}`);
+    return user;
+  }
 }
 
 export default JsonServerApi;
