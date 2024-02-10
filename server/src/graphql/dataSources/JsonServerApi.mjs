@@ -62,6 +62,10 @@ class JsonServerApi extends RESTDataSource {
     const [user] = await this.get(`/users?username=${username}`);
     return user;
   }
+
+  createAuthor(name) {
+    return this.post("/authors", { name });
+  }
 }
 
 export default JsonServerApi;

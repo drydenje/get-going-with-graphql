@@ -4,6 +4,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getAuthorBooks(author.id);
     },
   },
+
   Book: {
     authors(book, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getBookAuthors(book.id);
@@ -12,6 +13,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getBookReviews(book.id);
     },
   },
+
   Review: {
     book(review, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getBookById(review.bookId);
@@ -23,6 +25,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getUserById(review.userId);
     },
   },
+
   User: {
     library(user, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getUserLibrary(user.id);
@@ -31,6 +34,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getUserReviews(user.id);
     },
   },
+
   Query: {
     author(root, { id }, { dataSources }, info) {
       // fetch an author by ID
@@ -53,6 +57,12 @@ const resolvers = {
     },
     user(root, { username }, { dataSources }, info) {
       return dataSources.jsonServerApi.getUser(username);
+    },
+  },
+
+  Mutation: {
+    createAuthor(root, { name }, { dataSources }, info) {
+      return dataSources.jsonServerApi.createAuthor(name);
     },
   },
 };
