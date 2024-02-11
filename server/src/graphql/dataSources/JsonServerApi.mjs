@@ -64,7 +64,7 @@ class JsonServerApi extends RESTDataSource {
   }
 
   createAuthor(name) {
-    return this.post("/authors", { name });
+    return this.post("/authors", { body: { name } });
   }
 }
 
