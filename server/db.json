@@ -7,6 +7,10 @@
     {
       "name": "J. Kenji Lopez-Alt",
       "id": 2
+    },
+    {
+      "name": "Ursula K. Le Guin",
+      "id": 3
     }
   ],
   "books": [
@@ -15,6 +19,11 @@
       "cover": "http://covers.openlibrary.org/b/isbn/9780671461492-L.jpg",
       "summary": "After a Vogon constructor fleet destroys Earth to make way for a hyperspace bypass, the last surviving man, Arthur Dent, embarks on an interstellar adventure with his friend Ford Prefect (who, apparently, was an alien all along).",
       "title": "The Hitchhiker's Guide to the Galaxy"
+    },
+    {
+      "cover": "http://covers.openlibrary.org/b/isbn/038051284X-L.jpg",
+      "title": "The Dispossessed",
+      "id": 2
     }
   ],
   "bookAuthors": [
@@ -22,6 +31,19 @@
       "id": 1,
       "authorId": 1,
       "bookId": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "authorId": 3,
+      "bookId": 2,
+      "id": 3
+    },
+    {
+      "authorId": 3,
+      "bookId": 2,
+      "id": 4
     }
   ],
   "reviews": [

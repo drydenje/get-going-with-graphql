@@ -66,6 +66,31 @@ class JsonServerApi extends RESTDataSource {
   createAuthor(name) {
     return this.post("/authors", { body: { name } });
   }
+
+  async createBook({ authorIds, cover, summary, title }) {
+    const book = await this.post("/books", {
+      body: {
+        ...(cover && { cover }),
+        ...(summary && { summary }),
+        title,
+      },
+    });
+
+    if (authorIds?.length) {
+      await Promise.all(
+        authorIds.map((authorId) =>
+          this.post("/bookAuthors", {
+            body: {
+              authorId: parseInt(authorId),
+              bookId: book.id,
+            },
+          })
+        )
+      );
+    }
+
+    return book;
+  }
 }
 
 export default JsonServerApi;
