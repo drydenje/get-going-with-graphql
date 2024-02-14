@@ -46,6 +46,7 @@ const typeDefs = gql`
   type Mutation {
     createAuthor(name: String!): Author!
     createBook(input: CreateBookInput!): Book!
+    createReview(input: CreateReviewInput!): Review!
   }
 
   input CreateBookInput {
@@ -53,6 +54,13 @@ const typeDefs = gql`
     cover: String
     summary: String
     title: String!
+  }
+
+  input CreateReviewInput {
+    bookId: ID!
+    rating: Int!
+    reviewerId: ID!
+    text: String
   }
 `;
 
