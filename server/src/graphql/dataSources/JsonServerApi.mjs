@@ -1,3 +1,4 @@
+import { ForbiddenError } from "apollo-server";
 import { RESTDataSource } from "@apollo/datasource-rest";
 
 class JsonServerApi extends RESTDataSource {
