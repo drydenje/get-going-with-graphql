@@ -14,10 +14,11 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/datasource-rest": "^6.2.2",
-    "apollo-server": "^3.13.0",
+    "@apollo/server": "^4.10.0",
     "concurrently": "^8.2.2",
     "dotenv": "^16.3.1",
     "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "json-server": "^0.16.3",
     "node-fetch": "^3.3.2",
     "nodemon": "^3.0.2"

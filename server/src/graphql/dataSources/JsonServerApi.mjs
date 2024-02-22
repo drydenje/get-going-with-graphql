@@ -1,4 +1,4 @@
-import { ForbiddenError } from "apollo-server";
+// import { ForbiddenError } from "apollo-server";
 import { RESTDataSource } from "@apollo/datasource-rest";
 
 class JsonServerApi extends RESTDataSource {
@@ -16,6 +16,8 @@ class JsonServerApi extends RESTDataSource {
   }
 
   getAuthors() {
+    console.log("HEY");
+    console.log(this.get(`/authors`));
     return this.get(`/authors`);
   }
 

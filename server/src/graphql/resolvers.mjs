@@ -42,6 +42,7 @@ const resolvers = {
     },
     authors(root, args, { dataSources }, info) {
       // fetch all authors
+      console.log({ dataSources });
       return dataSources.jsonServerApi.getAuthors();
     },
     book(root, { id }, { dataSources }, info) {
