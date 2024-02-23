@@ -33,9 +33,6 @@
       "bookId": 1
     },
     {
-      "id": 2
-    },
-    {
       "authorId": 3,
       "bookId": 2,
       "id": 3
@@ -52,8 +49,11 @@
       "bookId": 1,
       "createdAt": "2021-02-20T15:02:28.308Z",
       "rating": 5,
-      "userId": 1,
+      "userId": 7,
       "text": "This book is out of this world!"
+    },
+    {
+      "id": 2
     }
   ],
   "users": [

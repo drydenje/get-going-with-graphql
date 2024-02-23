@@ -1,5 +1,5 @@
-// import { ForbiddenError } from "apollo-server";
 import { RESTDataSource } from "@apollo/datasource-rest";
+import { GraphQLError } from "graphql";
 
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
@@ -16,8 +16,6 @@ class JsonServerApi extends RESTDataSource {
   }
 
   getAuthors() {
-    console.log("HEY");
-    console.log(this.get(`/authors`));
     return this.get(`/authors`);
   }
 
@@ -93,6 +91,38 @@ class JsonServerApi extends RESTDataSource {
     }
 
     return book;
+  }
+
+  async createReview({ bookId, rating, reviewerId, text }) {
+    const existingReview = await this.get(
+      `/reviews?bookId=${bookId}&userId=${reviewerId}`
+    );
+
+    if (existingReview.length) {
+      throw new GraphQLError("Users can only submit one review per book", {
+        extensions: {
+          code: "FORBIDDEN",
+        },
+      });
+    }
+
+    return this.post("/reviews", {
+      ...(text && { text }),
+      bookId: parseInt(bookId),
+      createdAt: new Date().toISOString(),
+      rating,
+      userId: parseInt(reviewerId),
+    });
+
+    // this.post("/reviews", {
+    //   // ...(text && { text }),
+    //   bookId: 1,
+    //   createdAt: new Date().toISOString(),
+    //   rating: 3,
+    //   userId: 1,
+    // });
+
+    // return "test";
   }
 }
 

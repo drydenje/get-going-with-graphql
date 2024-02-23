@@ -19,23 +19,8 @@ const { url } = await startStandaloneServer(server, {
       },
       token,
     };
-    // };
-    // return {
-    //   dataSources: () => {
-    //     return (
-    //       {
-    //         jsonServerApi: new JsonServerApi(),
-    //       },
-    //       token
-    //     );
-    //   },
-    // };
   },
   listen: { port: process.env.PORT || 4000 },
 });
 
 console.log(`Server ready at ${url}`);
-
-// server.listen().then(({ url }) => {
-//   console.log(`Server ready at: ${url}`);
-// });
