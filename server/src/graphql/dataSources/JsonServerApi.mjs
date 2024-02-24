@@ -106,23 +106,15 @@ class JsonServerApi extends RESTDataSource {
       });
     }
 
-    return this.post("/reviews", {
-      ...(text && { text }),
-      bookId: parseInt(bookId),
-      createdAt: new Date().toISOString(),
-      rating,
-      userId: parseInt(reviewerId),
+    return await this.post("/reviews", {
+      body: {
+        rating,
+        ...(text && { text }),
+        bookId: parseInt(bookId),
+        createdAt: new Date().toISOString(),
+        userId: parseInt(reviewerId),
+      },
     });
-
-    // this.post("/reviews", {
-    //   // ...(text && { text }),
-    //   bookId: 1,
-    //   createdAt: new Date().toISOString(),
-    //   rating: 3,
-    //   userId: 1,
-    // });
-
-    // return "test";
   }
 }
 

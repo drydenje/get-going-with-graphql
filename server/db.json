@@ -53,6 +53,11 @@
       "text": "This book is out of this world!"
     },
     {
+      "rating": 5,
+      "text": "This book is out of this world!",
+      "bookId": 1,
+      "createdAt": "2024-02-24T04:08:11.673Z",
+      "userId": 1,
       "id": 2
     }
   ],
@@ -62,6 +67,12 @@
       "email": "alice@email.com",
       "name": "Alice Liddell",
       "username": "rabbithole84"
+    },
+    {
+      "id": 2,
+      "email": "bob@email.com",
+      "name": "Bob Bobberson",
+      "username": "bawby"
     }
   ],
   "userBooks": [
