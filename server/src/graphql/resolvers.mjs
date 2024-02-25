@@ -80,6 +80,18 @@ const resolvers = {
     updateReview(root, { input }, { dataSources }, info) {
       return dataSources.jsonServerApi.updateReview(input);
     },
+
+    signUp(root, { input }, { dataSources }, info) {
+      return dataSources.jsonServerApi.signUp(input);
+    },
+
+    addBooksToLibrary(root, { input }, { dataSources }, info) {
+      return dataSources.jsonServerApi.addBooksToLibrary(input);
+    },
+
+    removeBooksFromLibrary(root, { input }, { dataSources }, info) {
+      return dataSources.jsonServerApi.removeBooksFromLibrary(input);
+    },
   },
 };
 

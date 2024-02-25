@@ -130,6 +130,73 @@ class JsonServerApi extends RESTDataSource {
     await this.delete(`/reviews/${id}`);
     return id;
   }
+
+  async checkUniqueUserData(email, username) {
+    const res = await Promise.all([
+      this.get(`/users?email=${email}`),
+      this.get(`/users?username=${username}`),
+    ]);
+    const [existingEmail, existingUsername] = res;
+
+    if (existingEmail.length) {
+      throw new GraphQLError("Email is already in use");
+    } else if (existingUsername.length) {
+      throw new GraphQLError("Username already in use");
+    }
+  }
+
+  async signUp({ email, name, username }) {
+    await this.checkUniqueUserData(email, username);
+    return this.post("/users", {
+      body: {
+        email,
+        name,
+        username,
+      },
+    });
+  }
+
+  async addBooksToLibrary({ bookIds, userId }) {
+    const response = await Promise.all(
+      bookIds.map((bookId) =>
+        this.get(`/userBooks/?userId=${userId}&bookId=${bookId}`)
+      )
+    );
+    const existingUserBooks = response.flat();
+    const newBookIds = bookIds.filter(
+      (bookId) =>
+        !existingUserBooks.find((book) => book.id === parseInt(bookId))
+    );
+
+    await Promise.all(
+      bookIds.map((bookId) =>
+        this.post("/userBooks", {
+          body: {
+            bookId: parseInt(bookId),
+            createdAt: new Date().toISOString(),
+            userId: parseInt(userId),
+          },
+        })
+      )
+    );
+
+    return this.get(`/users/${userId}`);
+  }
+
+  async removeBooksFromLibrary({ bookIds, userId }) {
+    const response = await Promise.all(
+      bookIds.map((bookId) =>
+        this.get(`/userBooks/?userId=${userId}&bookId=${bookId}`)
+      )
+    );
+    const existingUserBooks = response.flat();
+
+    await Promise.all(
+      existingUserBooks.map(({ id }) => this.delete(`/userBooks/${id}`))
+    );
+
+    return this.get(`/users/${userId}`);
+  }
 }
 
 export default JsonServerApi;

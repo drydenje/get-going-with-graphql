@@ -65,6 +65,12 @@
       "email": "bob@email.com",
       "name": "Bob Bobberson",
       "username": "bawby"
+    },
+    {
+      "email": "jo@email.com",
+      "name": "Jo March",
+      "username": "bookworm68",
+      "id": 3
     }
   ],
   "userBooks": [
