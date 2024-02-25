@@ -45,20 +45,12 @@
   ],
   "reviews": [
     {
-      "id": 1,
-      "bookId": 1,
-      "createdAt": "2021-02-20T15:02:28.308Z",
-      "rating": 5,
-      "userId": 7,
-      "text": "This book is out of this world!"
-    },
-    {
       "rating": 5,
       "text": "This book is out of this world!",
       "bookId": 1,
-      "createdAt": "2024-02-24T04:08:11.673Z",
+      "createdAt": "2024-02-25T02:41:35.857Z",
       "userId": 1,
-      "id": 2
+      "id": 1
     }
   ],
   "users": [

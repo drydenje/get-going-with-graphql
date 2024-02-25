@@ -116,6 +116,20 @@ class JsonServerApi extends RESTDataSource {
       },
     });
   }
+
+  updateReview({ id, rating, text }) {
+    return this.patch(`reviews/${id}`, {
+      body: {
+        rating,
+        ...(text && { text }),
+      },
+    });
+  }
+
+  async deleteReview(id) {
+    await this.delete(`/reviews/${id}`);
+    return id;
+  }
 }
 
 export default JsonServerApi;

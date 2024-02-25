@@ -47,6 +47,8 @@ const typeDefs = gql`
     createAuthor(name: String!): Author!
     createBook(input: CreateBookInput!): Book!
     createReview(input: CreateReviewInput!): Review!
+    deleteReview(id: ID!): ID!
+    updateReview(input: UpdateReviewInput!): Review!
   }
 
   input CreateBookInput {
@@ -60,6 +62,12 @@ const typeDefs = gql`
     bookId: ID!
     rating: Int!
     reviewerId: ID!
+    text: String
+  }
+
+  input UpdateReviewInput {
+    id: ID!
+    rating: Int!
     text: String
   }
 `;
