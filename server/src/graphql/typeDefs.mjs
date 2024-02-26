@@ -1,6 +1,24 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
+  enum Genre {
+    ADVENTURE
+    CHILDREN
+    CLASSICS
+    COMIC_GRAPHIC_NOVEL
+    COOKBOOK
+    DETECTIVE_MYSTERY
+    DYSTOPIA
+    FANTASY
+    HORROR
+    HUMOR
+    NON_FICTION
+    SCIENCE_FICTION
+    ROMANCE
+    THRILLER
+    WESTERN
+  }
+
   type Author {
     id: ID!
     books: [Book]
