@@ -29,6 +29,7 @@ const typeDefs = gql`
     id: ID!
     authors: [Author]
     cover: String
+    genre: Genre
     reviews: [Review]
     summary: String
     title: String!
@@ -75,6 +76,7 @@ const typeDefs = gql`
   input CreateBookInput {
     authorIds: [ID]
     cover: String
+    genre: Genre
     summary: String
     title: String!
   }

@@ -68,10 +68,11 @@ class JsonServerApi extends RESTDataSource {
     return this.post("/authors", { body: { name } });
   }
 
-  async createBook({ authorIds, cover, summary, title }) {
+  async createBook({ authorIds, cover, genre, summary, title }) {
     const book = await this.post("/books", {
       body: {
         ...(cover && { cover }),
+        ...(genre && { genre }),
         ...(summary && { summary }),
         title,
       },

@@ -24,6 +24,12 @@
       "cover": "http://covers.openlibrary.org/b/isbn/038051284X-L.jpg",
       "title": "The Dispossessed",
       "id": 2
+    },
+    {
+      "cover": "http://covers.openlibrary.org/b/isbn/9781529034530-L.jpg",
+      "genre": "SCIENCE_FICTION",
+      "title": "The Restaurant at the End of the Universe",
+      "id": 3
     }
   ],
   "bookAuthors": [
@@ -41,6 +47,11 @@
       "authorId": 3,
       "bookId": 2,
       "id": 4
+    },
+    {
+      "authorId": 1,
+      "bookId": 3,
+      "id": 5
     }
   ],
   "reviews": [
