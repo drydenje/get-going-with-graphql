@@ -25,14 +25,34 @@ const typeDefs = gql`
     name: String!
   }
 
+  type Authors {
+    results: [Author]
+    pageInfo: PageInfo
+  }
+
+  enum AuthorOrderBy {
+    NAME_ASC
+    NAME_DESC
+  }
+
   type Book {
     id: ID!
     authors: [Author]
     cover: String
     genre: Genre
-    reviews: [Review]
+    reviews(limit: Int = 20, orderBy: ReviewOrderBy, page: Int): Reviews
     summary: String
     title: String!
+  }
+
+  type Books {
+    results: [Book]
+    pageInfo: PageInfo
+  }
+
+  enum BookOrderBy {
+    TITLE_ASC
+    TITLE_DESC
   }
 
   type Review {
@@ -44,20 +64,43 @@ const typeDefs = gql`
     text: String
   }
 
+  type Reviews {
+    results: [Review]
+    pageInfo: PageInfo
+  }
+
+  enum ReviewOrderBy {
+    REVIEWED_ON_ASC
+    REVIEWED_ON_DESC
+  }
+
+  enum LibraryOrderBy {
+    ADDED_ON_ASC
+    ADDED_ON_DESC
+  }
+
+  type PageInfo {
+    hasNextPage: Boolean
+    hasPrevPage: Boolean
+    page: Int
+    perPage: Int
+    totalCount: Int
+  }
+
   type User {
     id: ID!
     email: String!
-    library: [Book]
+    library(limit: Int = 20, orderBy: LibraryOrderBy, page: Int): Books
     name: String!
-    reviews: [Review]
+    reviews(limit: Int = 20, orderBy: ReviewOrderBy, page: Int): Reviews
     username: String!
   }
 
   type Query {
     author(id: ID!): Author
-    authors: [Author]
+    authors(limit: Int = 20, orderBy: AuthorOrderBy, page: Int): Authors
     book(id: ID!): Book
-    books: [Book]
+    books(limit: Int = 20, orderBy: BookOrderBy, page: Int): Books
     review(id: ID!): Review
     user(username: String!): User
   }

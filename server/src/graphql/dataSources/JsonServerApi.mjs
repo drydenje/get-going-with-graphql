@@ -198,6 +198,37 @@ class JsonServerApi extends RESTDataSource {
 
     return this.get(`/users/${userId}`);
   }
+
+  // parseParams({ limit, orderBy, page, ...rest }) {
+  //   if (limit && limit > 100) {
+  //     throw new GraphQLError("Maximum of 100 results per page", {
+  //       extensions: {
+  //         code: "BAD_USER_INPUT",
+  //       },
+  //     });
+  //   }
+
+  // const paginationParams = [];
+  // paginationParams.push(`_limit=${limit}`, `_page=${page || "1"}`);
+
+  // // parse the 'orderBy' argument into a '_sort' argument
+  // const [sort, order] = orderBy ? orderBy.split("_") : [];
+
+  // // handle other parameters collected in 'rest'
+  // const otherParams = Object.keys(rest).map((key) => `${key}=${rest[key]}`);
+
+  // // return the full-assembled query string
+  // const queryString = [
+  //   ...(sort ? [`_sort=${sort}`] : []),
+  //   ...(order ? [`_order=${order}`] : []),
+  //   ...paginationParams,
+  //   ...otherParams,
+  // ].join("&");
+
+  // console.log("QS:", queryString);
+
+  // return queryString ? `?${queryString}` : "";
+  // }
 }
 
 export default JsonServerApi;

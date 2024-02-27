@@ -5,6 +5,11 @@ const resolvers = {
     },
   },
 
+  AuthorOrderBy: {
+    NAME_ASC: "name_asc",
+    NAME_DESC: "name_desc",
+  },
+
   Book: {
     authors(book, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getBookAuthors(book.id);
@@ -12,6 +17,16 @@ const resolvers = {
     reviews(book, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getBookReviews(book.id);
     },
+  },
+
+  BookOrderBy: {
+    TITLE_ASC: "title_asc",
+    TITLE_DESC: "title_desc",
+  },
+
+  LibraryOrderBy: {
+    ADDED_ON_ASC: "createdAt_asc",
+    ADDED_ON_DESC: "createdAt_desc",
   },
 
   Review: {
@@ -24,6 +39,11 @@ const resolvers = {
     reviewer(review, args, { dataSources }, info) {
       return dataSources.jsonServerApi.getUserById(review.userId);
     },
+  },
+
+  ReviewOrderBy: {
+    REVIEWED_ON_ASC: "createdAt_asc",
+    REVIEWED_ON_DESC: "createdAt_desc",
   },
 
   User: {
