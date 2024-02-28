@@ -1,5 +1,6 @@
 import { RESTDataSource } from "@apollo/datasource-rest";
 import { GraphQLError } from "graphql";
+import parseLinkHeader from "parse-link-header";
 
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
@@ -15,8 +16,16 @@ class JsonServerApi extends RESTDataSource {
     return items.map((item) => item.book);
   }
 
-  getAuthors() {
-    return this.get(`/authors`);
+  async getAuthors({ limit, page, orderBy = "name_asc" }) {
+    const queryString = this.parseParams({
+      ...(limit && { limit }),
+      ...(page && { page }),
+      orderBy,
+    });
+    const authors = await this.get(`/authors${queryString}`);
+    const pageInfo = this.parsePageInfo({ limit, page });
+
+    return { results: authors, pageInfo };
   }
 
   getBookById(id) {
@@ -30,12 +39,30 @@ class JsonServerApi extends RESTDataSource {
     return items.map((item) => item.author);
   }
 
-  getBooks() {
-    return this.get(`/books`);
+  async getBooks({ limit, page, orderBy = "title_asc" }) {
+    const queryString = this.parseParams({
+      ...(limit && { limit }),
+      ...(page && { page }),
+      orderBy,
+    });
+    const books = await this.get(`/books${queryString}`);
+    const pageInfo = this.parsePageInfo({ limit, page });
+
+    return { results: books, pageInfo };
   }
 
-  getBookReviews(bookId) {
-    return this.get(`/reviews?bookId=${bookId}`);
+  async getBookReviews(bookId, { limit, page, orderBy = "createdAt_desc" }) {
+    const queryString = this.parseParams({
+      ...(limit && { limit }),
+      ...(page && { page }),
+      bookId,
+      orderBy,
+    });
+
+    const reviews = await this.get(`/reviews${queryString}`);
+    const pageInfo = this.parsePageInfo({ limit, page });
+
+    return { results: reviews, pageInfo };
   }
 
   getReviewById(id) {
@@ -50,13 +77,32 @@ class JsonServerApi extends RESTDataSource {
     );
   }
 
-  async getUserLibrary(userId) {
-    const items = await this.get(`/users/${userId}/books`);
-    return items.map((item) => item.book);
+  async getUserLibrary(userId, { limit, page, orderBy = "createdAt_desc" }) {
+    const queryString = this.parseParams({
+      _expand: "book",
+      ...(limit && { limit }),
+      ...(page && { page }),
+      orderBy,
+      userId,
+    });
+    const items = await this.get(`/userBooks${queryString}`);
+    const books = items.map((item) => item.book);
+    const pageInfo = this.parsePageInfo({ limit, page });
+
+    return { results: books, pageInfo };
   }
 
-  getUserReviews(userId) {
-    return this.get(`/reviews?userId=${userId}`);
+  async getUserReviews(userId, { limit, page, orderBy = "createdAt_desc" }) {
+    const queryString = this.parseParams({
+      ...(limit && { limit }),
+      ...(page && { page }),
+      orderBy,
+      userId,
+    });
+    const reviews = await this.get(`/reviews${queryString}`);
+    const pageInfo = this.parsePageInfo({ limit, page });
+
+    return { results: reviews, pageInfo };
   }
 
   async getUser(username) {
@@ -199,36 +245,66 @@ class JsonServerApi extends RESTDataSource {
     return this.get(`/users/${userId}`);
   }
 
-  // parseParams({ limit, orderBy, page, ...rest }) {
-  //   if (limit && limit > 100) {
-  //     throw new GraphQLError("Maximum of 100 results per page", {
-  //       extensions: {
-  //         code: "BAD_USER_INPUT",
-  //       },
-  //     });
-  //   }
+  parseParams({ limit, orderBy, page, ...rest }) {
+    if (limit && limit > 100) {
+      throw new GraphQLError("Maximum of 100 results per page", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
 
-  // const paginationParams = [];
-  // paginationParams.push(`_limit=${limit}`, `_page=${page || "1"}`);
+    const paginationParams = [];
+    paginationParams.push(`_limit=${limit}`, `_page=${page || "1"}`);
 
-  // // parse the 'orderBy' argument into a '_sort' argument
-  // const [sort, order] = orderBy ? orderBy.split("_") : [];
+    // parse the 'orderBy' argument into a '_sort' argument
+    const [sort, order] = orderBy ? orderBy.split("_") : [];
 
-  // // handle other parameters collected in 'rest'
-  // const otherParams = Object.keys(rest).map((key) => `${key}=${rest[key]}`);
+    // handle other parameters collected in 'rest'
+    const otherParams = Object.keys(rest).map((key) => `${key}=${rest[key]}`);
 
-  // // return the full-assembled query string
-  // const queryString = [
-  //   ...(sort ? [`_sort=${sort}`] : []),
-  //   ...(order ? [`_order=${order}`] : []),
-  //   ...paginationParams,
-  //   ...otherParams,
-  // ].join("&");
+    // return the full-assembled query string
+    const queryString = [
+      ...(sort ? [`_sort=${sort}`] : []),
+      ...(order ? [`_order=${order}`] : []),
+      ...paginationParams,
+      ...otherParams,
+    ].join("&");
 
-  // console.log("QS:", queryString);
+    return queryString ? `?${queryString}` : "";
+  }
 
-  // return queryString ? `?${queryString}` : "";
-  // }
+  async didReceiveResponse({ response }) {
+    console.log("HERE");
+    if (response.ok) {
+      console.log(response);
+      this.linkHeader = response.headers.get("Link");
+      this.totalCountHeader = response.headers.get("X-Total-Count");
+      return this.parseBody(response);
+    } else {
+      throw await this.errorFromResponse(response);
+    }
+  }
+
+  parsePageInfo({ limit, page }) {
+    // console.log(this.totalCountHeader);
+    if (this.totalCountHeader) {
+      let hasNextPage, hasPrevPage;
+      if (this.linkHeader) {
+        const { next, prev } = parseLinkHeader(this.linkHeader);
+        hasNextPage = !!next;
+        hasPrevPage = !!prev;
+      }
+      return {
+        hasNextPage: hasNextPage || false,
+        hasPrevPage: hasPrevPage || false,
+        page: page || 1,
+        perPage: limit,
+        totalCount: this.totalCountHeader,
+      };
+    }
+    return null;
+  }
 }
 
 export default JsonServerApi;

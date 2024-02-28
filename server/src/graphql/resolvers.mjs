@@ -15,7 +15,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getBookAuthors(book.id);
     },
     reviews(book, args, { dataSources }, info) {
-      return dataSources.jsonServerApi.getBookReviews(book.id);
+      return dataSources.jsonServerApi.getBookReviews(book.id, args);
     },
   },
 
@@ -51,7 +51,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getUserLibrary(user.id);
     },
     reviews(user, args, { dataSources }, info) {
-      return dataSources.jsonServerApi.getUserReviews(user.id);
+      return dataSources.jsonServerApi.getUserReviews(user.id, args);
     },
   },
 
@@ -62,7 +62,7 @@ const resolvers = {
     },
     authors(root, args, { dataSources }, info) {
       // fetch all authors
-      return dataSources.jsonServerApi.getAuthors();
+      return dataSources.jsonServerApi.getAuthors(args);
     },
     book(root, { id }, { dataSources }, info) {
       // fetch book by ID
@@ -70,7 +70,7 @@ const resolvers = {
     },
     books(root, args, { dataSources }, info) {
       // fetch all books
-      return dataSources.jsonServerApi.getBooks();
+      return dataSources.jsonServerApi.getBooks(args);
     },
     review(root, { id }, { dataSources }, info) {
       return dataSources.jsonServerApi.getReviewById(id);
