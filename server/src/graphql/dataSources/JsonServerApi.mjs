@@ -274,20 +274,19 @@ class JsonServerApi extends RESTDataSource {
     return queryString ? `?${queryString}` : "";
   }
 
-  async didReceiveResponse({ response }) {
-    console.log("HERE");
-    if (response.ok) {
-      console.log(response);
-      this.linkHeader = response.headers.get("Link");
-      this.totalCountHeader = response.headers.get("X-Total-Count");
-      return this.parseBody(response);
+  async fetch(path, incomingRequest = {}) {
+    const result = await super.fetch(path, incomingRequest);
+
+    if (result.response.ok) {
+      this.linkHeader = result.response.headers.get("Link");
+      this.totalCountHeader = result.response.headers.get("X-Total-Count");
+      return result;
     } else {
       throw await this.errorFromResponse(response);
     }
   }
 
   parsePageInfo({ limit, page }) {
-    // console.log(this.totalCountHeader);
     if (this.totalCountHeader) {
       let hasNextPage, hasPrevPage;
       if (this.linkHeader) {
