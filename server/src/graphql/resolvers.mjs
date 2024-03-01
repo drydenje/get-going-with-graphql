@@ -55,6 +55,16 @@ const resolvers = {
     },
   },
 
+  Person: {
+    __resolveType(obj, context, info) {
+      if (obj.username) {
+        return "User";
+      } else {
+        return "Author";
+      }
+    },
+  },
+
   Query: {
     author(root, { id }, { dataSources }, info) {
       // fetch an author by ID
@@ -74,6 +84,9 @@ const resolvers = {
     },
     review(root, { id }, { dataSources }, info) {
       return dataSources.jsonServerApi.getReviewById(id);
+    },
+    searchPeople(root, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.searchPeople(args);
     },
     user(root, { username }, { dataSources }, info) {
       return dataSources.jsonServerApi.getUser(username);

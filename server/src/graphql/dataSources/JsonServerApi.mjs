@@ -304,6 +304,24 @@ class JsonServerApi extends RESTDataSource {
     }
     return null;
   }
+
+  async searchPeople({ exact, query, orderBy = "RESULT_ASC" }) {
+    const queryString = this.parseParams({
+      ...(exact ? { name: query } : { q: query }),
+      limit: 50,
+    });
+    const authors = await this.get(`/authors${queryString}`);
+    const users = await this.get(`/users${queryString}`);
+    const results = []
+      .concat(authors, users)
+      .sort((a, b) =>
+        orderBy === "RESULT_ASC"
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
+
+    return results;
+  }
 }
 
 export default JsonServerApi;

@@ -11,6 +11,10 @@
     {
       "name": "Ursula K. Le Guin",
       "id": 3
+    },
+    {
+      "name": "Alice Walker",
+      "id": 4
     }
   ],
   "books": [
@@ -30,6 +34,10 @@
       "genre": "SCIENCE_FICTION",
       "title": "The Restaurant at the End of the Universe",
       "id": 3
+    },
+    {
+      "title": "The Color Purple",
+      "id": 4
     }
   ],
   "bookAuthors": [
@@ -52,6 +60,11 @@
       "authorId": 1,
       "bookId": 3,
       "id": 5
+    },
+    {
+      "authorId": 4,
+      "bookId": 4,
+      "id": 6
     }
   ],
   "reviews": [

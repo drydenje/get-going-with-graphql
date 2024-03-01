@@ -19,7 +19,17 @@ const typeDefs = gql`
     WESTERN
   }
 
-  type Author {
+  enum SearchOrderBy {
+    RESULT_ASC
+    RESULT_DESC
+  }
+
+  interface Person {
+    id: ID!
+    name: String!
+  }
+
+  type Author implements Person {
     id: ID!
     books: [Book]
     name: String!
@@ -87,7 +97,7 @@ const typeDefs = gql`
     totalCount: Int
   }
 
-  type User {
+  type User implements Person {
     id: ID!
     email: String!
     library(limit: Int = 20, orderBy: LibraryOrderBy, page: Int): Books
@@ -103,6 +113,11 @@ const typeDefs = gql`
     books(limit: Int = 20, orderBy: BookOrderBy, page: Int): Books
     review(id: ID!): Review
     user(username: String!): User
+    searchPeople(
+      exact: Boolean = false
+      orderBy: SearchOrderBy
+      query: String!
+    ): [Person]
   }
 
   type Mutation {
