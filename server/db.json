@@ -15,6 +15,10 @@
     {
       "name": "Alice Walker",
       "id": 4
+    },
+    {
+      "name": "David McCullough",
+      "id": 5
     }
   ],
   "books": [
@@ -38,6 +42,10 @@
     {
       "title": "The Color Purple",
       "id": 4
+    },
+    {
+      "title": "John Adams",
+      "id": 5
     }
   ],
   "bookAuthors": [
@@ -65,6 +73,11 @@
       "authorId": 4,
       "bookId": 4,
       "id": 6
+    },
+    {
+      "authorId": 5,
+      "bookId": 5,
+      "id": 7
     }
   ],
   "reviews": [

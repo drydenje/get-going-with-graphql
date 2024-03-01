@@ -29,6 +29,8 @@ const typeDefs = gql`
     name: String!
   }
 
+  union BookResult = Book | Author
+
   type Author implements Person {
     id: ID!
     books: [Book]
@@ -118,6 +120,11 @@ const typeDefs = gql`
       orderBy: SearchOrderBy
       query: String!
     ): [Person]
+    searchBooks(
+      exact: Boolean = false
+      orderBy: SearchOrderBy
+      query: String!
+    ): [BookResult]
   }
 
   type Mutation {

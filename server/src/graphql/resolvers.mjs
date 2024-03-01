@@ -65,6 +65,16 @@ const resolvers = {
     },
   },
 
+  BookResult: {
+    __resolveType(obj, context, info) {
+      if (obj.title) {
+        return "Book";
+      } else {
+        return "Author";
+      }
+    },
+  },
+
   Query: {
     author(root, { id }, { dataSources }, info) {
       // fetch an author by ID
@@ -87,6 +97,9 @@ const resolvers = {
     },
     searchPeople(root, args, { dataSources }, info) {
       return dataSources.jsonServerApi.searchPeople(args);
+    },
+    searchBooks(root, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.searchBooks(args);
     },
     user(root, { username }, { dataSources }, info) {
       return dataSources.jsonServerApi.getUser(username);
