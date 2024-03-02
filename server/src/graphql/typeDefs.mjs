@@ -28,6 +28,11 @@ const typeDefs = gql`
   scalar DateTime
 
   """
+  An integer-based rating from 1 (low) to 5 (high)
+  """
+  scalar Rating
+
+  """
   Sorting options for search results.
   """
   enum SearchOrderBy {
@@ -144,7 +149,7 @@ const typeDefs = gql`
     book: Book
 
     "The user's integer-based rating of the book (from 1 to 5)"
-    rating: Int!
+    rating: Rating!
 
     "The date and time the review was created."
     reviewedOn: DateTime!
@@ -333,7 +338,7 @@ const typeDefs = gql`
     bookId: ID!
 
     "The user's integer-based rating of the book (from 1 to 5)"
-    rating: Int!
+    rating: Rating!
 
     "The ID of the user submitting the review."
     reviewerId: ID!
@@ -375,7 +380,7 @@ const typeDefs = gql`
     id: ID!
 
     "The user's integer-based rating of the book (from 1 to 5)"
-    rating: Int!
+    rating: Rating!
 
     "The text-based content of the review."
     text: String

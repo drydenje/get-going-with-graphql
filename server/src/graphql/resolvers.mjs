@@ -1,4 +1,5 @@
 import DateTimeType from "./scalars/DateTimeType.mjs";
+import RatingType from "./scalars/RatingType.mjs";
 
 const resolvers = {
   Author: {
@@ -27,6 +28,7 @@ const resolvers = {
   },
 
   DateTime: DateTimeType,
+  Rating: RatingType,
 
   LibraryOrderBy: {
     ADDED_ON_ASC: "createdAt_asc",
