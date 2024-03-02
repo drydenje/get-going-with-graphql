@@ -23,6 +23,11 @@ const typeDefs = gql`
   }
 
   """
+  An ISO 8601-encoded UTC date string.
+  """
+  scalar DateTime
+
+  """
   Sorting options for search results.
   """
   enum SearchOrderBy {
@@ -142,7 +147,7 @@ const typeDefs = gql`
     rating: Int!
 
     "The date and time the review was created."
-    reviewedOn: String!
+    reviewedOn: DateTime!
 
     "The user who submitted the book review."
     reviewer: User!

@@ -5,7 +5,7 @@ import parseLinkHeader from "parse-link-header";
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
 
-  getAuthorById(id) {
+  async getAuthorById(id) {
     return this.get(`/authors/${id}`).catch(
       (err) => err.message === "404: Not Found" && null
     );
@@ -28,7 +28,7 @@ class JsonServerApi extends RESTDataSource {
     return { results: authors, pageInfo };
   }
 
-  getBookById(id) {
+  async getBookById(id) {
     return this.get(`/books/${id}`).catch(
       (err) => err.message === "404: Not Found" && null
     );
@@ -65,13 +65,13 @@ class JsonServerApi extends RESTDataSource {
     return { results: reviews, pageInfo };
   }
 
-  getReviewById(id) {
+  async getReviewById(id) {
     return this.get(`/reviews/${id}`).catch(
       (err) => err.message === "404: Not Found" && null
     );
   }
 
-  getUserById(id) {
+  async getUserById(id) {
     return this.get(`/users/${id}`).catch(
       (err) => err.message === "404: Not Found" && null
     );

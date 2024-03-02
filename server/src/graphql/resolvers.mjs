@@ -1,3 +1,5 @@
+import DateTimeType from "./scalars/DateTimeType.mjs";
+
 const resolvers = {
   Author: {
     books(author, args, { dataSources }, info) {
@@ -23,6 +25,8 @@ const resolvers = {
     TITLE_ASC: "title_asc",
     TITLE_DESC: "title_desc",
   },
+
+  DateTime: DateTimeType,
 
   LibraryOrderBy: {
     ADDED_ON_ASC: "createdAt_asc",
