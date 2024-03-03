@@ -11,16 +11,16 @@ const RatingType = new GraphQLScalarType({
     if (isValidRating(value)) {
       return value;
     }
-    throw new GraphQLScalarType("Rating must be an integer from 1 to 5", {
-      extensions: { code: "BAD_USER_INPUT" },
+    throw new GraphQLError("Rating must be an integer from 1 to 5", {
+      extensions: { code: "BAD_USER_INPUT", argumentName: "rating" },
     });
   },
   serialize: (value) => {
     if (isValidRating(parseInt(value))) {
       return value;
     }
-    throw new GraphQLScalarType("Rating must be an integer from 1 to 5", {
-      extensions: { code: "BAD_USER_INPUT" },
+    throw new GraphQLError("Rating must be an integer from 1 to 5", {
+      extensions: { code: "BAD_USER_INPUT", argumentName: "rating" },
     });
   },
   parseLiteral: (ast) => {
@@ -28,8 +28,8 @@ const RatingType = new GraphQLScalarType({
     if (ast.kind === Kind.INT && isValidRating(intValue)) {
       return intValue;
     }
-    throw new GraphQLScalarType("Rating must be an integer from 1 to 5", {
-      extensions: { code: "BAD_USER_INPUT" },
+    throw new GraphQLError("Rating must be an integer from 1 to 5", {
+      extensions: { code: "BAD_USER_INPUT", argumentName: "rating" },
     });
   },
 });
