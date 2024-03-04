@@ -1,6 +1,17 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
+  directive @unique(
+    "The resource path name from the REST endpoint."
+    path: String!
+    """
+    The database key name upon which to force uniqueness.
+
+    If not provided, then the GraphQL schema field will be used.
+    """
+    key: String
+  ) on INPUT_FIELD_DEFINITION
+
   """
   Literary genres that classify books.
   """
@@ -352,13 +363,13 @@ const typeDefs = gql`
   """
   input SignUpInput {
     "The email address of the user (must be unique)"
-    email: String!
+    email: String! @unique(path: "users")
 
     "The full name of the user."
     name: String!
 
     "The user's chosen username (must be unique)"
-    username: String!
+    username: String! @unique(path: "users")
   }
 
   """

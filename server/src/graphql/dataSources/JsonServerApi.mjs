@@ -192,14 +192,24 @@ class JsonServerApi extends RESTDataSource {
     }
   }
 
-  async signUp({ email, name, username }) {
-    await this.checkUniqueUserData(email, username);
+  // async signUp({ email, name, username }) {
+  //   await this.checkUniqueUserData(email, username);
+  //   return this.post("/users", {
+  //     body: {
+  //       email,
+  //       name,
+  //       username,
+  //     },
+  //   });
+  // }
+
+  // After the 'unique' directive
+  signUp({ email, name, username }) {
     return this.post("/users", {
-      body: {
-        email,
-        name,
-        username,
-      },
+      createdAt: new Date().toISOString(),
+      email,
+      name,
+      username,
     });
   }
 

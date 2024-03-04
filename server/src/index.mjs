@@ -3,6 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import resolvers from "./graphql/resolvers.mjs";
 import typeDefs from "./graphql/typeDefs.mjs";
 import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
+import UniqueDirective from "./graphql/directives/UniqueDirective.mjs";
 
 const server = new ApolloServer({
   typeDefs,
@@ -17,7 +18,9 @@ const { url } = await startStandaloneServer(server, {
       dataSources: {
         jsonServerApi: new JsonServerApi({ cache, token }),
       },
-      token,
+      schemaDirectives: {
+        unique: UniqueDirective,
+      },
     };
   },
   listen: { port: process.env.PORT || 4000 },
