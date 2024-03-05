@@ -1,5 +1,5 @@
 import { defaultFieldResolver } from "graphql";
-import { SchemaDirectiveVisitor, UserInputError } from "apollo-server";
+import { SchemaDirectiveVisitor, UserInputError } from "@apollo/server";
 import fetch from "node-fetch";
 
 const baseUrl = process.eng.REST_API_BASE_URL;
