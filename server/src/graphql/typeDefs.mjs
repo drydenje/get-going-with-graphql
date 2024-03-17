@@ -295,6 +295,16 @@ const typeDefs = gql`
     user(username: String!): User
   }
 
+  """
+  A currently authenticated user and their valid JWT
+  """
+  type AuthPayload {
+    "The logged-in user."
+    viewer: User
+    "A JWT issued at the time of the user's most recent authentication."
+    token: String
+  }
+
   type Mutation {
     "Adds books to user's library."
     addBooksToLibrary(input: UpdateLibraryBooksInput!): User!
@@ -315,7 +325,7 @@ const typeDefs = gql`
     removeBooksFromLibrary(input: UpdateLibraryBooksInput!): User!
 
     "Creates a new user."
-    signUp(input: SignUpInput!): User!
+    signUp(input: SignUpInput!): AuthPayload!
 
     "Updates a review."
     updateReview(input: UpdateReviewInput!): Review!
@@ -370,6 +380,13 @@ const typeDefs = gql`
 
     "The user's chosen username (must be unique)"
     username: String! @unique(path: "users")
+
+    """
+    The user's chosen password.
+
+    It must be a minimum of 8 characters in length and contain 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.
+    """
+    password: String!
   }
 
   """
