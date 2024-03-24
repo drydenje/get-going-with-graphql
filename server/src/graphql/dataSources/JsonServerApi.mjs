@@ -1,7 +1,9 @@
+import { ForbiddenError, UserinputError } from "@apollo/server";
 import { RESTDataSource } from "@apollo/datasource-rest";
 import { GraphQLError } from "graphql";
 import parseLinkHeader from "parse-link-header";
 
+import { hashPassword, verifyPassword } from "../../utils/passwords.mjs";
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
 
@@ -204,11 +206,17 @@ class JsonServerApi extends RESTDataSource {
   // }
 
   // After the 'unique' directive
-  signUp({ email, name, username }) {
+  signUp({ email, name, password, username }) {
+    if (validator.isStrongPassword(password)) {
+      throw new UserinputError(
+        "Password must be a minimum of 8 characters in length and contain 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character."
+      );
+    }
     return this.post("/users", {
       createdAt: new Date().toISOString(),
       email,
       name,
+      password,
       username,
     });
   }
