@@ -1,8 +1,9 @@
-import { ForbiddenError, UserinputError } from "@apollo/server";
+// import { ForbiddenError, UserinputError } from "@apollo/server";
 import { RESTDataSource } from "@apollo/datasource-rest";
 import { GraphQLError } from "graphql";
 import parseLinkHeader from "parse-link-header";
-
+import jwt from "jsonwebtoken";
+import validator from "validator";
 import { hashPassword, verifyPassword } from "../../utils/passwords.mjs";
 class JsonServerApi extends RESTDataSource {
   baseURL = process.env.REST_API_BASE_URL;
@@ -194,31 +195,35 @@ class JsonServerApi extends RESTDataSource {
     }
   }
 
-  // async signUp({ email, name, username }) {
-  //   await this.checkUniqueUserData(email, username);
-  //   return this.post("/users", {
-  //     body: {
-  //       email,
-  //       name,
-  //       username,
-  //     },
-  //   });
-  // }
-
   // After the 'unique' directive
-  signUp({ email, name, password, username }) {
-    if (validator.isStrongPassword(password)) {
-      throw new UserinputError(
-        "Password must be a minimum of 8 characters in length and contain 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character."
+  async signUp({ email, name, password, username }) {
+    if (!validator.isStrongPassword(password)) {
+      throw new GraphQLError(
+        "Password must be a minimum of 8 characters in length and contain 1 lowercase letter, 1 uppercase letter, 1 number, and 1 special character.",
+        {
+          extensions: {
+            code: "BAD_USER_INPUT",
+          },
+        }
       );
     }
-    return this.post("/users", {
-      createdAt: new Date().toISOString(),
-      email,
-      name,
-      password,
-      username,
+
+    const passwordHash = await hashPassword(password);
+    const user = await this.post("/users", {
+      body: {
+        email,
+        name,
+        password: passwordHash,
+        username,
+      },
     });
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+      algorithm: "HS256",
+      subject: user.id.toString(),
+      expiresIn: "1d",
+    });
+    console.log(user);
+    return { token, viewer: user };
   }
 
   async addBooksToLibrary({ bookIds, userId }) {
