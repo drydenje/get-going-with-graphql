@@ -321,6 +321,9 @@ const typeDefs = gql`
     "Deletes a review."
     deleteReview(id: ID!): ID!
 
+    "Auhenticates an existing user."
+    login(password: String!, username: String!): AuthPayload!
+
     "Remove books currently in a user's library."
     removeBooksFromLibrary(input: UpdateLibraryBooksInput!): User!
 

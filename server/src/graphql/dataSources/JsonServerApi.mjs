@@ -1,4 +1,3 @@
-// import { ForbiddenError, UserinputError } from "@apollo/server";
 import { RESTDataSource } from "@apollo/datasource-rest";
 import { GraphQLError } from "graphql";
 import parseLinkHeader from "parse-link-header";
@@ -222,7 +221,7 @@ class JsonServerApi extends RESTDataSource {
       subject: user.id.toString(),
       expiresIn: "1d",
     });
-    console.log(user);
+
     return { token, viewer: user };
   }
 
