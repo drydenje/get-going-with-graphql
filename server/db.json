@@ -138,6 +138,20 @@
       "password": "c3ad94f84e92309d39347934c14f1876:dca706496c7f891630338fd693fe7182a7ed92f19980a1433bf58e8bfbaf33f06d41ecb0d5f1a52e6c4e0191b282c9d14929ef0959db6c7d17ee2cc2b21e33af",
       "username": "mockingbird60",
       "id": 9
+    },
+    {
+      "email": "scout@email.com",
+      "name": "Scout Finch",
+      "password": "1b98b588d716629a7fa7ccb969577385:2a82e525b012c8e878a2a8b7a3e38aaee72274b40c9514ca3c71899d07ecc595e9ba95f5d3d22da3fe47da28b4680c3ccb6ed88188c3542322d71ec3cc0ed2b4",
+      "username": "mockingbird60",
+      "id": 10
+    },
+    {
+      "email": "scout@email.com",
+      "name": "Scout Finch",
+      "password": "47dfd70f219603f8fe7e39d110a9c3d6:fc5faa606dccf0bc11a90368dc4215aefa30b093c4a7497e1d2e06ca0747eb14ee43242df19420231ede66fd1c83245bdebf1f7398391833cd2e93e3f04a4102",
+      "username": "mockingbird60",
+      "id": 11
     }
   ],
   "userBooks": [

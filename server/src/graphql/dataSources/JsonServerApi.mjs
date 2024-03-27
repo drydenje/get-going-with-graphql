@@ -308,6 +308,36 @@ class JsonServerApi extends RESTDataSource {
     }
   }
 
+  async login({ password, username }) {
+    const user = await this.getUser(username);
+
+    if (!user) {
+      throw new GraphQLError("User with that username does not exist", {
+        extensions: {
+          code: "USER_LOGIN_DOES_NOT_EXIST",
+        },
+      });
+    }
+
+    const isValidPassword = await verifyPassword(password, user.password);
+
+    if (!isValidPassword) {
+      throw new GraphQLError("Username or password is incorrect", {
+        extensions: {
+          code: "USER_LOGIN_INCORRECT",
+        },
+      });
+    }
+
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+      algorithm: "HS256",
+      subject: user.id.toString(),
+      expiresIn: "1d",
+    });
+
+    return { token, viewer: user };
+  }
+
   parsePageInfo({ limit, page }) {
     if (this.totalCountHeader) {
       let hasNextPage, hasPrevPage;

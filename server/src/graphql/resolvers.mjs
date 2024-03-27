@@ -144,6 +144,10 @@ const resolvers = {
     removeBooksFromLibrary(root, { input }, { dataSources }, info) {
       return dataSources.jsonServerApi.removeBooksFromLibrary(input);
     },
+
+    login(root, args, { dataSources }, info) {
+      return dataSources.jsonServerApi.login(args);
+    },
   },
 };
 
