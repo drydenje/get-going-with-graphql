@@ -1,4 +1,5 @@
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
+import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
   directive @unique(
