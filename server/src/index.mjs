@@ -14,6 +14,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import express from "express";
 import http from "http";
 import cors from "cors";
+import { expressjwt } from "express-jwt";
 
 // Required logic for integrating with Express
 const app = express();
@@ -36,19 +37,36 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  cors(),
+  cors({
+    origin: ["https://studio.apollographql.com", "localhost:3000"],
+  }),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
-  })
+    context: async ({ req }) => {
+      // token: req.headers.token
+      const user = req.user || null;
+      return { user };
+    },
+  }),
+  expressjwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+    credentialsRequired: false,
+  }),
+  (err, req, res, next) => {
+    if (err.code === "invalid_token") {
+      return next();
+    }
+    return next(err);
+  }
 );
 
 // Modified server startup
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
 
-console.log(`🚀 Server ready at http://localhost:4000/`);
+console.log(`Server ready at http://localhost:4000/`);
 
 // // This is for the 'unique' directive, need to update it for apollo-v4
 // // import UniqueDirective from "./graphql/directives/UniqueDirective.mjs";
