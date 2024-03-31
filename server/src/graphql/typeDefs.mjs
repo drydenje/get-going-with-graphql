@@ -249,6 +249,9 @@ const typeDefs = gql`
   }
 
   type Query {
+    "Retrieves the currently authenticated user."
+    viewer: User
+
     "Retrieves a single author by ID."
     author(id: ID!): Author
 
