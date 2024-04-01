@@ -5,7 +5,7 @@
 // import { startStandaloneServer } from "@apollo/server/standalone";
 import resolvers from "./graphql/resolvers.mjs";
 import typeDefs from "./graphql/typeDefs.mjs";
-// import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
+import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
 
 // npm install @apollo/server express graphql cors
 import { ApolloServer } from "@apollo/server";
@@ -45,9 +45,19 @@ app.use(
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req }) => {
-      // token: req.headers.token
+      // console.log("REQ:", req.user);
       const user = req.user || null;
-      return { user };
+      // console.log(user);
+      const { cache } = server;
+      const token = req.headers.token;
+      return {
+        user,
+      };
+    },
+    dataSources: () => {
+      return {
+        jsonServerApi: new JsonServerApi({ cache, token }),
+      };
     },
   }),
   expressjwt({
@@ -78,22 +88,22 @@ console.log(`Server ready at http://localhost:4000/`);
 //   resolvers,
 // });
 
-// // const { url } = await startStandaloneServer(server, {
-// //   context: async ({ req }) => {
-// //     const { cache } = server;
-// //     const token = req.headers.token;
-// //     return {
-// //       dataSources: {
-// //         jsonServerApi: new JsonServerApi({ cache, token }),
-// //       },
-// //       // This is for the 'unique' directive, need to update it for apollo-v4
-// //       // schemaDirectives: {
-// //       //   unique: UniqueDirective,
-// //       // },
-// //     };
-// //   },
-// //   listen: { port: process.env.PORT || 4000 },
-// // });
+// const { url } = await startStandaloneServer(server, {
+//   context: async ({ req }) => {
+//     const { cache } = server;
+//     const token = req.headers.token;
+//     return {
+//       dataSources: {
+//         jsonServerApi: new JsonServerApi({ cache, token }),
+//       },
+//       // This is for the 'unique' directive, need to update it for apollo-v4
+//       // schemaDirectives: {
+//       //   unique: UniqueDirective,
+//       // },
+//     };
+//   },
+//   listen: { port: process.env.PORT || 4000 },
+// });
 
 // await server.start();
 
