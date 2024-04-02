@@ -159,6 +159,13 @@
       "password": "2b748c22405a7e820d41e4cfb247cf11:9c3576a5119ae820b96df239bbf1a183e1b901faf5f8ed4f4314ed779ac02a478b9492d7b231936065d7e4ebff043fb204fa71fbc723c3e6a0ea3b7050d327f2",
       "username": "mockingbird60",
       "id": 12
+    },
+    {
+      "email": "scout@email.com",
+      "name": "Scout Finch",
+      "password": "e7f9ff8fd33be10d21cbd9ddb3493b46:53ebe110ce68d9628e589edd3f8a9f4609c9106f741ae698e07198fb5b291ecfbcd0acc303adebee1bfdfee6d9db1bf66bb92440054a85f0114a39d05ae128f3",
+      "username": "mockingbird60",
+      "id": 13
     }
   ],
   "userBooks": [

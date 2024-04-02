@@ -45,18 +45,16 @@ app.use(
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req }) => {
-      // console.log("REQ:", req.user);
+      console.log("REQ:", req);
       const user = req.user || null;
       // console.log(user);
       const { cache } = server;
-      const token = req.headers.token;
+      const token = req;
       return {
+        dataSources: {
+          jsonServerApi: new JsonServerApi({ cache, token }),
+        },
         user,
-      };
-    },
-    dataSources: () => {
-      return {
-        jsonServerApi: new JsonServerApi({ cache, token }),
       };
     },
   }),
