@@ -111,6 +111,7 @@ const resolvers = {
       return dataSources.jsonServerApi.getUser(username);
     },
     viewer(root, args, { dataSources, user }, info) {
+      console.log("USR:", user);
       if (user?.username) {
         return dataSources.jsonServerApi.getUser(user.username);
       }

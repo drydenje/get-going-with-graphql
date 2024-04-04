@@ -1,8 +1,3 @@
-// import { ApolloServer } from "@apollo/server";
-// import { expressMiddleware } from "@apollo/server/express4";
-// import cors from "cors";
-// import express from "express";
-// import { startStandaloneServer } from "@apollo/server/standalone";
 import resolvers from "./graphql/resolvers.mjs";
 import typeDefs from "./graphql/typeDefs.mjs";
 import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
@@ -23,6 +18,14 @@ const app = express();
 // enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app);
 
+if (process.env.NODE_ENV === "development") {
+  app.use(
+    cors({
+      origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+    })
+  );
+}
+
 // Same ApolloServer initialization as before, plus the drain plugin
 // for our httpServer.
 const server = new ApolloServer({
@@ -37,19 +40,19 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  cors({
-    origin: ["https://studio.apollographql.com", "localhost:3000"],
-  }),
+  // cors({
+  //   origin: ["https://studio.apollographql.com", "localhost:3000"],
+  // }),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req }) => {
-      // console.log("REQ:", req);
+      // console.log("REQ:", req.headers);
       const user = req.user || null;
-      console.log(user);
+      // console.log(user);
       const { cache } = server;
-      const token = req;
+      const token = req.headers.token;
       return {
         dataSources: {
           jsonServerApi: new JsonServerApi({ cache, token }),
