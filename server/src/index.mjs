@@ -22,6 +22,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(
     cors({
       origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+      credentials: true,
     })
   );
 }
@@ -31,6 +32,10 @@ if (process.env.NODE_ENV === "development") {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources: {
+    // jsonServerApi: new JsonServerApi({ cache, token }),
+    jsonServerApi: new JsonServerApi(),
+  },
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 // Ensure we wait for our server to start
@@ -40,24 +45,29 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  // cors({
+  // cors(
+  //   {
   //   origin: ["https://studio.apollographql.com", "localhost:3000"],
-  // }),
+  // }
+  // ),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req }) => {
       // console.log("REQ:", req.headers);
-      const user = req.user || null;
-      // console.log(user);
+      const user = req.auth || null;
+      // console.log(req.headers.authorization);
+      console.log("USER:", req.auth);
       const { cache } = server;
       const token = req.headers.token;
+      // console.log("TOKEN:", token);
       return {
-        dataSources: {
-          jsonServerApi: new JsonServerApi({ cache, token }),
-        },
         user,
+        // dataSources: {
+        //   // jsonServerApi: new JsonServerApi({ cache, token }),
+        //   jsonServerApi: new JsonServerApi(),
+        // },
       };
     },
   }),

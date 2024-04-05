@@ -110,62 +110,11 @@
       "id": 3
     },
     {
+      "email": "scout@email.com",
+      "name": "Scout Finch",
+      "password": "4ae41d4b0204c63e24447348a77d5463:510b0896d2686974f152ed22400e27eabadf03e4d38f4e6e5451697f8f07dada86b76c9e092838616e361cccb8c996f9ddc6865dcdc4cc3b0ce57cfec83a68f4",
+      "username": "mockingbird60",
       "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "d624d5d5760ac1c302ac525d017aee7d:288c7a287b7f6cbaaa500f5188da31eb37f310e1e3a46f2602030f05eda85b8fb66c2f3e6048ed68640259334f86840d4ca6154989626726df437d979781f9b0",
-      "username": "mockingbird60",
-      "id": 7
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "68b534359938160bf2be33f6bebd05ff:dd69a322e0d63075c09c4f26ce71081e0b9231fcfbe829573ad9397a8bb821d12e24f439a60a78456adf4eeedd0aae71547b08ada2189fb6535ea8e0b0795aaf",
-      "username": "mockingbird60",
-      "id": 8
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "c3ad94f84e92309d39347934c14f1876:dca706496c7f891630338fd693fe7182a7ed92f19980a1433bf58e8bfbaf33f06d41ecb0d5f1a52e6c4e0191b282c9d14929ef0959db6c7d17ee2cc2b21e33af",
-      "username": "mockingbird60",
-      "id": 9
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "1b98b588d716629a7fa7ccb969577385:2a82e525b012c8e878a2a8b7a3e38aaee72274b40c9514ca3c71899d07ecc595e9ba95f5d3d22da3fe47da28b4680c3ccb6ed88188c3542322d71ec3cc0ed2b4",
-      "username": "mockingbird60",
-      "id": 10
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "47dfd70f219603f8fe7e39d110a9c3d6:fc5faa606dccf0bc11a90368dc4215aefa30b093c4a7497e1d2e06ca0747eb14ee43242df19420231ede66fd1c83245bdebf1f7398391833cd2e93e3f04a4102",
-      "username": "mockingbird60",
-      "id": 11
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "2b748c22405a7e820d41e4cfb247cf11:9c3576a5119ae820b96df239bbf1a183e1b901faf5f8ed4f4314ed779ac02a478b9492d7b231936065d7e4ebff043fb204fa71fbc723c3e6a0ea3b7050d327f2",
-      "username": "mockingbird60",
-      "id": 12
-    },
-    {
-      "email": "scout@email.com",
-      "name": "Scout Finch",
-      "password": "e7f9ff8fd33be10d21cbd9ddb3493b46:53ebe110ce68d9628e589edd3f8a9f4609c9106f741ae698e07198fb5b291ecfbcd0acc303adebee1bfdfee6d9db1bf66bb92440054a85f0114a39d05ae128f3",
-      "username": "mockingbird60",
-      "id": 13
     }
   ],
   "userBooks": [
