@@ -32,10 +32,10 @@ if (process.env.NODE_ENV === "development") {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  dataSources: {
-    // jsonServerApi: new JsonServerApi({ cache, token }),
-    jsonServerApi: new JsonServerApi(),
-  },
+  // dataSources: {
+  //   // jsonServerApi: new JsonServerApi({ cache, token }),
+  //   jsonServerApi: new JsonServerApi(),
+  // },
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 // Ensure we wait for our server to start
@@ -54,20 +54,24 @@ app.use(
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req }) => {
+    context: async ({ req, res }) => {
       // console.log("REQ:", req.headers);
       const user = req.auth || null;
+      // console.log("REQ");
+
+      // console.log(req);
       // console.log(req.headers.authorization);
-      console.log("USER:", req.auth);
+
       const { cache } = server;
       const token = req.headers.token;
       // console.log("TOKEN:", token);
       return {
         user,
-        // dataSources: {
-        //   // jsonServerApi: new JsonServerApi({ cache, token }),
-        //   jsonServerApi: new JsonServerApi(),
-        // },
+        token,
+        dataSources: {
+          jsonServerApi: new JsonServerApi({ cache, token }),
+          // jsonServerApi: new JsonServerApi(),
+        },
       };
     },
   }),
@@ -75,6 +79,18 @@ app.use(
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"],
     credentialsRequired: false,
+    getToken: function fromHeaderOrQuerystring(req) {
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.split(" ")[0] === "Bearer"
+      ) {
+        return req.headers.authorization.split(" ")[1];
+      } else if (req.query && req.query.token) {
+        console.log(req.query.token);
+        return req.query.token;
+      }
+      return null;
+    },
   }),
   (err, req, res, next) => {
     if (err.code === "invalid_token") {
