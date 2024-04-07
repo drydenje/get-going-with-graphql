@@ -56,6 +56,7 @@ app.use(
   expressMiddleware(server, {
     context: async ({ req, res }) => {
       // console.log("REQ:", req.headers);
+      console.log("REQ.AUTH:", req?.auth);
       const user = req.auth || null;
       // console.log("REQ");
 
@@ -67,7 +68,7 @@ app.use(
       // console.log("TOKEN:", token);
       return {
         user,
-        token,
+        // token,
         dataSources: {
           jsonServerApi: new JsonServerApi({ cache, token }),
           // jsonServerApi: new JsonServerApi(),
