@@ -45,37 +45,7 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  // cors(
-  //   {
-  //   origin: ["https://studio.apollographql.com", "localhost:3000"],
-  // }
-  // ),
   express.json(),
-  // expressMiddleware accepts the same arguments:
-  // an Apollo Server instance and optional configuration options
-  expressMiddleware(server, {
-    context: async ({ req, res }) => {
-      // console.log("REQ:", req.headers);
-      console.log("REQ.AUTH:", req?.auth);
-      const user = req.auth || null;
-      // console.log("REQ");
-
-      // console.log(req);
-      // console.log(req.headers.authorization);
-
-      const { cache } = server;
-      const token = req.headers.token;
-      // console.log("TOKEN:", token);
-      return {
-        user,
-        // token,
-        dataSources: {
-          jsonServerApi: new JsonServerApi({ cache, token }),
-          // jsonServerApi: new JsonServerApi(),
-        },
-      };
-    },
-  }),
   expressjwt({
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"],
@@ -93,6 +63,33 @@ app.use(
       return null;
     },
   }),
+  // expressMiddleware accepts the same arguments:
+  // an Apollo Server instance and optional configuration options
+  expressMiddleware(server, {
+    context: async ({ req, res }) => {
+      // console.log("REQ:", req.headers);
+      console.log("REQ.AUTH:", req.auth);
+      const user = req.auth || null;
+      // console.log("REQ");
+
+      // console.log(req);
+      // console.log(req.headers.authorization);
+
+      const { cache } = server;
+      const token = req.headers.token;
+      // console.log("TOKEN:", token);
+      return {
+        user,
+        // token,
+        dataSources: {
+          jsonServerApi: new JsonServerApi(),
+          // { cache, token }
+          // jsonServerApi: new JsonServerApi(),
+        },
+      };
+    },
+  }),
+
   (err, req, res, next) => {
     if (err.code === "invalid_token") {
       return next();
