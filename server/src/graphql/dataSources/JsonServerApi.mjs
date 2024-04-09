@@ -109,7 +109,6 @@ class JsonServerApi extends RESTDataSource {
 
   async getUser(username) {
     const [user] = await this.get(`/users?username=${username}`);
-    console.log("USER (good that it made it this far):", user);
     return user;
   }
 

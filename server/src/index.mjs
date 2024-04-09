@@ -1,15 +1,17 @@
-import resolvers from "./graphql/resolvers.mjs";
-import typeDefs from "./graphql/typeDefs.mjs";
-import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
-
-// npm install @apollo/server express graphql cors
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import express from "express";
 import http from "http";
 import cors from "cors";
 import { expressjwt } from "express-jwt";
+
+import resolvers from "./graphql/resolvers.mjs";
+import typeDefs from "./graphql/typeDefs.mjs";
+import permissions from "./graphql/permissions.mjs";
+import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
 
 // Required logic for integrating with Express
 const app = express();
@@ -27,17 +29,25 @@ if (process.env.NODE_ENV === "development") {
   );
 }
 
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+  schemaDirectives: {
+    unique: UniqueDirective,
+  },
+});
+
+const schemaWithPermissions = applyMiddleware(schema, permissions);
+
 // Same ApolloServer initialization as before, plus the drain plugin
 // for our httpServer.
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  // dataSources: {
-  //   // jsonServerApi: new JsonServerApi({ cache, token }),
-  //   jsonServerApi: new JsonServerApi(),
-  // },
+  // typeDefs,
+  // resolvers,
+  schema: schemaWithPermissions,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
+
 // Ensure we wait for our server to start
 await server.start();
 
@@ -50,41 +60,20 @@ app.use(
     secret: process.env.JWT_SECRET,
     algorithms: ["HS256"],
     credentialsRequired: false,
-    getToken: function fromHeaderOrQuerystring(req) {
-      if (
-        req.headers.authorization &&
-        req.headers.authorization.split(" ")[0] === "Bearer"
-      ) {
-        return req.headers.authorization.split(" ")[1];
-      } else if (req.query && req.query.token) {
-        console.log(req.query.token);
-        return req.query.token;
-      }
-      return null;
-    },
   }),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
     context: async ({ req, res }) => {
-      // console.log("REQ:", req.headers);
-      console.log("REQ.AUTH:", req.auth);
       const user = req.auth || null;
-      // console.log("REQ");
-
-      // console.log(req);
-      // console.log(req.headers.authorization);
-
       const { cache } = server;
       const token = req.headers.token;
-      // console.log("TOKEN:", token);
+
       return {
         user,
         // token,
         dataSources: {
-          jsonServerApi: new JsonServerApi(),
-          // { cache, token }
-          // jsonServerApi: new JsonServerApi(),
+          jsonServerApi: new JsonServerApi({ cache, token }),
         },
       };
     },
