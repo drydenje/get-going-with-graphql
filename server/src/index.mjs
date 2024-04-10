@@ -11,6 +11,7 @@ import { expressjwt } from "express-jwt";
 import resolvers from "./graphql/resolvers.mjs";
 import typeDefs from "./graphql/typeDefs.mjs";
 import permissions from "./graphql/permissions.mjs";
+import UniqueDirective from "./graphql/directives/UniqueDirective.mjs";
 import JsonServerApi from "./graphql/dataSources/JsonServerApi.mjs";
 
 // Required logic for integrating with Express
@@ -45,6 +46,10 @@ const server = new ApolloServer({
   // typeDefs,
   // resolvers,
   schema: schemaWithPermissions,
+  // This is for the 'unique' directive, need to update it for apollo-v4
+  schemaDirectives: {
+    unique: UniqueDirective,
+  },
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
 });
 

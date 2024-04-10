@@ -4,7 +4,7 @@ import fetch from "node-fetch";
 
 const baseUrl = process.eng.REST_API_BASE_URL;
 
-class UniqueDirectives extends SchemaDirectiveVisitor {
+class UniqueDirective extends SchemaDirectiveVisitor {
   getMutations(predicate = null) {
     if (!this._mutations) {
       this._mutations = Object.values(
