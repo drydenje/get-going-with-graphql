@@ -1,5 +1,10 @@
 import { defaultFieldResolver } from "graphql";
+
+// this was used by graphql-tools
+// it was removed a few versions ago
+// the documentation isn't great, and it will crash so i can't inspect running code
 import { SchemaDirectiveVisitor, UserInputError } from "@apollo/server";
+
 import fetch from "node-fetch";
 
 const baseUrl = process.eng.REST_API_BASE_URL;
