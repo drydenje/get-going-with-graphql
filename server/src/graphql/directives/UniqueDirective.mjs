@@ -1,76 +1,80 @@
-import { defaultFieldResolver } from "graphql";
+import { defaultFieldResolver, GraphQLError, GraphQLSchema } from "graphql";
 
 // this was used by graphql-tools
 // it was removed a few versions ago
 // the documentation isn't great, and it will crash so i can't inspect running code
-import { SchemaDirectiveVisitor, UserInputError } from "@apollo/server";
+
+// import { SchemaDirectiveVisitor, UserInputError } from "@apollo/server";
+import { getDirective, MapperKind, mapSchema } from "@graphql-tools/utils";
 
 import fetch from "node-fetch";
 
 const baseUrl = process.eng.REST_API_BASE_URL;
 
-class UniqueDirective extends SchemaDirectiveVisitor {
-  getMutations(predicate = null) {
-    if (!this._mutations) {
-      this._mutations = Object.values(
-        this.schema.getMutationType().getFields()
-      );
-    }
+function uniqueDirective(directiveName: )
 
-    if (!predicate) {
-      return this._mutations || [];
-    }
+// class UniqueDirective extends SchemaDirectiveVisitor {
+//   getMutations(predicate = null) {
+//     if (!this._mutations) {
+//       this._mutations = Object.values(
+//         this.schema.getMutationType().getFields()
+//       );
+//     }
 
-    return this._mutations.filter(predicate);
-  }
+//     if (!predicate) {
+//       return this._mutations || [];
+//     }
 
-  getMutationArgumentValue(fieldName, args) {
-    const argTuples = Object.entries(args);
+//     return this._mutations.filter(predicate);
+//   }
 
-    for (let i = 0; i < argTuples.length; i++) {
-      const [key, value] = argTuples[i];
+//   getMutationArgumentValue(fieldName, args) {
+//     const argTuples = Object.entries(args);
 
-      if (value !== null && typeof value === "object") {
-        return this.getMutationArgumentValue(fieldName, value);
-      } else if (key === fieldName) {
-        return value;
-      }
-    }
+//     for (let i = 0; i < argTuples.length; i++) {
+//       const [key, value] = argTuples[i];
 
-    return null;
-  }
+//       if (value !== null && typeof value === "object") {
+//         return this.getMutationArgumentValue(fieldName, value);
+//       } else if (key === fieldName) {
+//         return value;
+//       }
+//     }
 
-  visitInputFieldDefinition(field, { objectType }) {
-    // field validation
-    const { path, key } = this.args;
-    const fieldName = key ? key : field.name;
+//     return null;
+//   }
 
-    const mutationsForInput = this.getMutations(({ args = [] }) => {
-      return args.find((arg) => arg?.type?.ofType === objectType);
-    });
+//   visitInputFieldDefinition(field, { objectType }) {
+//     // field validation
+//     const { path, key } = this.args;
+//     const fieldName = key ? key : field.name;
 
-    mutationsForInput.forEach((mutation) => {
-      const { resolve = defaultFieldResolver } = mutation;
+//     const mutationsForInput = this.getMutations(({ args = [] }) => {
+//       return args.find((arg) => arg?.type?.ofType === objectType);
+//     });
 
-      mutation.resolve = async (...args) => {
-        const uniqueValue = this.getMutationArgumentValue(fieldName, args[1]);
+//     mutationsForInput.forEach((mutation) => {
+//       const { resolve = defaultFieldResolver } = mutation;
 
-        if (uniqueValue) {
-          const response = await fetch(
-            `${baseUrl}/${path}?${fieldName}=${uniqueValue}`
-          );
-          const results = await response.json();
-          if (results.length) {
-            throw new UserInputError(
-              `Value for ${fieldName} is already in use`
-            );
-          }
-        }
+//       mutation.resolve = async (...args) => {
+//         const uniqueValue = this.getMutationArgumentValue(fieldName, args[1]);
 
-        return await resolve.apply(this, args);
-      };
-    });
-  }
-}
+//         if (uniqueValue) {
+//           const response = await fetch(
+//             `${baseUrl}/${path}?${fieldName}=${uniqueValue}`
+//           );
+//           const results = await response.json();
+//           if (results.length) {
+//             throw new UserInputError(
+//               `Value for ${fieldName} is already in use`
+//             );
+//           }
+//         }
+
+//         return await resolve.apply(this, args);
+//       };
+//     });
+//   }
+// }
 
 export default UniqueDirective;
